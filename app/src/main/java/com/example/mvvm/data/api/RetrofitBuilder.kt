@@ -49,7 +49,7 @@ object RetrofitBuilder {
             .create()
         return Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("${Constants.BASE_URL}api/")
+            .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
     }

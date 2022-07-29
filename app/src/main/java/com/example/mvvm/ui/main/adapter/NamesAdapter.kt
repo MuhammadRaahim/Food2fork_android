@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvm.data.model.Blog
+import com.example.mvvm.data.model.response.Data
 import com.example.mvvm.databinding.NameItemBinding
 import com.example.mvvm.ui.main.callbacks.OnItemDeleteListener
 import com.example.mvvm.ui.main.viewmodel.MainViewModel
 
 class NamesAdapter(
-    private var nameList: ArrayList<Blog>,
+    private var nameList: ArrayList<Data>,
     private var onItemDelete: OnItemDeleteListener
 ): RecyclerView.Adapter<NamesAdapter.Holder>() {
 
@@ -28,7 +29,7 @@ class NamesAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun updateList(list: ArrayList<Blog>){
+    fun updateList(list: ArrayList<Data>){
         nameList = list
         notifyDataSetChanged()
     }
@@ -37,11 +38,11 @@ class NamesAdapter(
         private val binding: NameItemBinding
     ):RecyclerView.ViewHolder(binding.root){
 
-        fun bind(blog: Blog) {
-            binding.tvName.text = blog.title
+        fun bind(user: Data) {
+            binding.tvName.text = user.firstName
 
             binding.ivDelete.setOnClickListener{
-                onItemDelete.onItemDelete(blog)
+                onItemDelete.onItemDelete(user)
             }
         }
 

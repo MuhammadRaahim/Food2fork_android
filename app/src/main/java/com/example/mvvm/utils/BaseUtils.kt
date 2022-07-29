@@ -52,6 +52,7 @@ class BaseUtils {
                 val errorResponse: ErrorResponse =
                     Gson().fromJson(errorBody, ErrorResponse::class.java)
                 if (httpException.code() == 401) {
+                    //logout
 //                    EventBus.getDefault().post(LogoutEvent())
                 }
                 errorResponse.message

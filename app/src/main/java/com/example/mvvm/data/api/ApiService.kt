@@ -1,14 +1,13 @@
 package com.example.mvvm.data.api
 
-
+import com.example.mvvm.data.model.response.QuoteListResponse
+import retrofit2.Response
+import retrofit2.http.GET
 
 
 interface ApiService {
 
-//    @POST("register")
-//    suspend fun registerUser(
-//        @Body request: RegisterRequest,
-//        @Query("referal_code") referralCode: String
-//    ): RegisterResponse
+    @GET("users")
+    suspend fun getQuotes() : QuoteListResponse
 
 }
