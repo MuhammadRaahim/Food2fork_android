@@ -1,9 +1,7 @@
 package com.example.mvvm.ui.main.view.activities
 
-import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Observer
@@ -11,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvm.data.api.ApiHelper
 import com.example.mvvm.data.api.RetrofitBuilder
-import com.example.mvvm.data.model.Blog
 import com.example.mvvm.data.model.response.Data
 import com.example.mvvm.data.model.response.QuoteListResponse
 import com.example.mvvm.databinding.ActivityMainBinding
@@ -28,7 +25,7 @@ class MainActivity : AppCompatActivity(), OnItemDeleteListener {
     private lateinit var adapter: NamesAdapter
     private lateinit var nameList: ArrayList<Data>
 
-    private val viewModel by viewModels<MainViewModel>{
+    private val viewModel:MainViewModel by viewModels{
         ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
     }
 
@@ -46,6 +43,9 @@ class MainActivity : AppCompatActivity(), OnItemDeleteListener {
     private fun setClickListeners() {
         binding.apply {
             btnSubmit.setOnClickListener{
+                if (viewModel..value == null) {
+                    viewModel.getServicesBySubCategories(args.id)
+                }
               viewModel.getQuotes()
             }
         }

@@ -4,11 +4,9 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.mvvm.data.model.Blog
 import com.example.mvvm.data.model.response.Data
 import com.example.mvvm.databinding.NameItemBinding
 import com.example.mvvm.ui.main.callbacks.OnItemDeleteListener
-import com.example.mvvm.ui.main.viewmodel.MainViewModel
 
 class NamesAdapter(
     private var nameList: ArrayList<Data>,
