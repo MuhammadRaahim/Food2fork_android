@@ -4,22 +4,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.lifecycle.Observer
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.mvvm.data.api.ApiHelper
 import com.example.mvvm.data.api.RetrofitBuilder
 import com.example.mvvm.data.model.response.Data
-import com.example.mvvm.data.model.response.QuoteListResponse
 import com.example.mvvm.databinding.ActivityMainBinding
 import com.example.mvvm.ui.base.ViewModelFactory
+import com.example.mvvm.ui.main.adapter.MyLoadStateAdapter
 import com.example.mvvm.ui.main.adapter.NamesAdapter
-import com.example.mvvm.ui.main.callbacks.OnItemDeleteListener
 import com.example.mvvm.ui.main.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
-import com.horizam.pro.elean.utils.Status
 
-class MainActivity : AppCompatActivity(), OnItemDeleteListener {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: NamesAdapter
@@ -34,67 +30,71 @@ class MainActivity : AppCompatActivity(), OnItemDeleteListener {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        initViews()
+        setUpUI()
         setRecyclerView()
         setUpObserver()
         setClickListeners()
+        executeApi()
     }
 
     private fun setClickListeners() {
         binding.apply {
             btnSubmit.setOnClickListener{
-                if (viewModel..value == null) {
-                    viewModel.getServicesBySubCategories(args.id)
-                }
-              viewModel.getQuotes()
+                executeApi()
             }
+        }
+    }
+
+    private fun executeApi(){
+        if (viewModel.getQuotes.value == null) {
+            viewModel.getQuotes()
         }
     }
 
     private fun setUpObserver() {
-        viewModel.getQuotes.observe(this, Observer{
-            it.let { resource ->
-                when(resource.status){
-                    Status.SUCCESS -> {
-                        binding.progressBar.isVisible = false
-                        handleResponse(it.data)
-                    }
-                    Status.LOADING -> {
-                        binding.progressBar.isVisible = true
-                    }
-                    Status.ERROR -> {
-                        binding.progressBar.isVisible = false
-                        Snackbar.make(findViewById(android.R.id.content),it.message.toString()
-                            ,Snackbar.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        })
-    }
-
-    private fun handleResponse(data: QuoteListResponse?) {
-        if (data != null){
-            nameList = data.data
-            adapter.updateList(nameList)
+        viewModel.getQuotes.observe(this){
+            adapter.submitData(lifecycle, it)
         }
     }
 
-    private fun initViews() {
+
+    private fun setUpUI() {
         nameList = ArrayList()
+        adapter = NamesAdapter()
     }
 
     private fun setRecyclerView() {
-        binding.rvNames.layoutManager =LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        adapter = NamesAdapter(nameList,this)
-        binding.rvNames.adapter = adapter
-    }
-
-    override fun <T> onItemDelete(item: T) {
-        if (item is Data){
-            nameList.remove(item)
-            adapter.updateList(nameList)
+        binding.rvNames.let {
+            it.setHasFixedSize(true)
+            it.layoutManager = LinearLayoutManager(this)
+            it.adapter = NamesAdapter()
+            it.adapter = adapter.withLoadStateHeaderAndFooter(
+                header = MyLoadStateAdapter { adapter.retry() },
+                footer = MyLoadStateAdapter { adapter.retry() }
+            )
+            setAdapterLoadState(adapter)
         }
     }
+
+    private fun setAdapterLoadState(adapter: NamesAdapter) {
+        adapter.addLoadStateListener { loadState ->
+            binding.apply {
+                binding.progressBar.isVisible = loadState.source.refresh is LoadState.Loading
+                binding.rvNames.isVisible = loadState.source.refresh is LoadState.NotLoading
+                binding.btnSubmit.isVisible = loadState.source.refresh is LoadState.Error
+                // no results
+                if (loadState.source.refresh is LoadState.NotLoading &&
+                    loadState.append.endOfPaginationReached &&
+                    adapter.itemCount < 1
+                ) {
+
+                    binding.rvNames.isVisible = false
+                }
+            }
+        }
+    }
+
+
 
 
 }

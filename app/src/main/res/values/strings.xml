@@ -3,4 +3,7 @@
     <string name="str_enter_information">Enter Information</string>
     <string name="str_get_data">Get Data</string>
     <string name="str_hallo">Hallo</string>
+    <string name="str_close">Close</string>
+    <string name="str_retry">Retry</string>
+    <string name="str_results_could_not_be_loaded">Results could not be loaded</string>
 </resources>

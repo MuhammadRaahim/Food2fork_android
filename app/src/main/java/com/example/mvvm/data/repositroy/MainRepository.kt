@@ -10,8 +10,8 @@ class MainRepository(private val apiHelper: ApiHelper) {
 
     fun getQuotes() = Pager(
         config = PagingConfig(
-            pageSize = 20,
-            maxSize = 100,
+            pageSize = 1,
+            maxSize = 20,
             enablePlaceholders = false
         ),
         pagingSourceFactory = {
