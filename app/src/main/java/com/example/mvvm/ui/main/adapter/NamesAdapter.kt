@@ -3,9 +3,11 @@ package com.example.mvvm.ui.main.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mvvm.R
 import com.example.mvvm.data.model.response.Data
 import com.example.mvvm.databinding.NameItemBinding
 import com.example.mvvm.ui.main.callbacks.OnItemDeleteListener
@@ -15,7 +17,8 @@ import kotlinx.coroutines.NonDisposableHandle.parent
 class NamesAdapter: PagingDataAdapter<Data,NamesAdapter.Holder>(ITEM_COMPARATOR){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val binding = NameItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding:NameItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context),
+            R.layout.name_item, parent, false)
         return Holder(binding)
     }
 
@@ -26,17 +29,13 @@ class NamesAdapter: PagingDataAdapter<Data,NamesAdapter.Holder>(ITEM_COMPARATOR)
         }
     }
 
-
-
     inner class Holder(
         private val binding: NameItemBinding
     ):RecyclerView.ViewHolder(binding.root){
 
-
         fun bind(currentItem: Data) {
-            binding.tvName.text = currentItem.firstName
+            binding.data = currentItem
         }
-
 
     }
 

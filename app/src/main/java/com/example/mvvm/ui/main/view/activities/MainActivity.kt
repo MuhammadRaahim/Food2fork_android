@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mvvm.R
 import com.example.mvvm.data.api.ApiHelper
 import com.example.mvvm.data.api.RetrofitBuilder
 import com.example.mvvm.data.model.response.Data
@@ -27,8 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         setUpUI()
         setRecyclerView()

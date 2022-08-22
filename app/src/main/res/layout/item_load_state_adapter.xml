@@ -6,19 +6,15 @@
     android:padding="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
    <ProgressBar
        android:id="@+id/progress_bar"
        android:layout_width="wrap_content"
-       android:layout_height="wrap_content"
-       />
-
+       android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tv_results_not_loaded"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/str_results_could_not_be_loaded"/>
-
     <Button
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
@@ -26,5 +22,4 @@
         android:text="@string/str_retry"
         android:backgroundTint="@color/black"
         android:layout_marginTop="7dp"/>
-
 </LinearLayout>
