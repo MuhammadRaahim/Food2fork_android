@@ -4,7 +4,7 @@
     <data>
         <variable
             name="data"
-            type="com.example.mvvm.data.model.response.Data" />
+            type="com.instances.food2fork.data.model.response.Data" />
     </data>
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

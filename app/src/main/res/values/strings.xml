@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MVVM</string>
+    <string name="app_name">food2fork</string>
     <string name="str_enter_information">Enter Information</string>
     <string name="str_get_data">Get Data</string>
     <string name="str_hallo">Hallo</string>
