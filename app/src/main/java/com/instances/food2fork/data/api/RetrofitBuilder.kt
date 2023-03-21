@@ -22,18 +22,12 @@ object RetrofitBuilder {
         clientBuilder.addInterceptor(getLoggingInterceptor())
             .addInterceptor { chain ->
                 val newRequest: Request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${manager.accessToken}")
-                    .addHeader("Accept", "application/json")
-                    .addHeader("Device-Id", BaseUtils.DEVICE_ID)
-                    .addHeader("Device-Type", "android")
+                    .addHeader("Authorization", "Token 9c8b06d329136da358c2d00e76946b0111ce2c48")
                     .build()
                 chain.proceed(newRequest)
             }
             .writeTimeout(60, TimeUnit.SECONDS).connectTimeout(5, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
-        /*.addInterceptor(offlineInterceptor)
-        .addNetworkInterceptor(onlineInterceptor)
-        .cache(cache)*/
         return clientBuilder.build()
     }
 
@@ -55,40 +49,5 @@ object RetrofitBuilder {
     }
 
     val apiService: ApiService = getRetrofit().create(ApiService::class.java)
-
-
-
-    // online intercepter
-    var onlineInterceptor: Interceptor = object : Interceptor {
-        @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain): Response {
-            val response: Response = chain.proceed(chain.request())
-            val maxAge = 60 // read from cache for 60 seconds even if there is internet connection
-            return response.newBuilder()
-                .header("Cache-Control", "public, max-age=$maxAge")
-                .removeHeader("Pragma")
-                .build()
-        }
-    }
-
-    // offline intercepter
-    var offlineInterceptor: Interceptor = object : Interceptor {
-        @Throws(IOException::class)
-        override fun intercept(chain: Interceptor.Chain): Response {
-            var request: Request = chain.request()
-            if (!BaseUtils.isInternetAvailable(App.getAppContext()!!)) {
-                val maxStale = 60 * 60 * 24 * 30 // Offline cache available for 30 days
-                request = request.newBuilder()
-                    .header("Cache-Control", "public, only-if-cached, max-stale=$maxStale")
-                    .removeHeader("Pragma")
-                    .build()
-            }
-            return chain.proceed(request)
-        }
-    }
-
-    // Cache size
-    var cacheSize = 10 * 1024 * 1024 // 10 MB
-    var cache: Cache = Cache(App.getAppContext()!!.cacheDir, cacheSize.toLong())
 
 }

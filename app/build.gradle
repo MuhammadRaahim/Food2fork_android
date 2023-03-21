@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -31,7 +32,6 @@ android {
     }
     buildFeatures {
         viewBinding true
-        dataBinding true
     }
 }
 
@@ -84,5 +84,13 @@ dependencies {
 
     // circular imageview
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    //spinkitt
+    implementation 'com.github.ybq:Android-SpinKit:1.4.0'
+
+    //room database
+    implementation 'androidx.room:room-runtime:2.5.0'
+    kapt 'androidx.room:room-compiler:2.5.0'
+    implementation 'androidx.room:room-ktx:2.5.0'
 
 }

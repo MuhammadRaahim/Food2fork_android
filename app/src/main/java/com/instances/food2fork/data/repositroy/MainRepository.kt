@@ -8,14 +8,14 @@ import com.instances.food2fork.data.pagingsource.QuotePagingSource
 
 class MainRepository(private val apiHelper: ApiHelper) {
 
-    fun getQuotes() = Pager(
+    fun getQuotes(query: String) = Pager(
         config = PagingConfig(
             pageSize = 1,
-            maxSize = 20,
+            maxSize = 30,
             enablePlaceholders = false
         ),
         pagingSourceFactory = {
-            QuotePagingSource(apiHelper)
+            QuotePagingSource(apiHelper,query)
         }
     ).liveData
 }

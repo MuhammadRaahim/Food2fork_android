@@ -9,26 +9,12 @@ class MainViewModel(private val  mainRepository: MainRepository): ViewModel() {
     private val getQuoteRequest = MutableLiveData<String>()
 
 
-    val getQuotes = getQuoteRequest.switchMap {
-        mainRepository.getQuotes().cachedIn(viewModelScope)
+    val getRecipes = getQuoteRequest.switchMap {
+        mainRepository.getQuotes(it).cachedIn(viewModelScope)
     }
 
-
-//    val  getQuotes = getQuoteRequest.switchMap {
-//        liveData(Dispatchers.IO){
-//            emit(Resource.loading(data = null))
-//            try {
-//                emit(Resource.success(data = mainRepository.getQuotes()))
-//            } catch (exception: Exception) {
-//                val errorMessage = BaseUtils.getError(exception)
-//                emit(Resource.error(data = null, message = errorMessage))
-//            }
-//        }
-//    }
-
-
-    fun getQuotes(){
-        getQuoteRequest.value = ""
+    fun getRecipes(query: String){
+        getQuoteRequest.value = query
     }
 
 }

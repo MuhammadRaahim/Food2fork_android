@@ -26,11 +26,17 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MVVM"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name="com.instances.food2fork.ui.main.view.activities.MainActivity"
+            android:name=".ui.main.view.activities.DetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.view.activities.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.main.view.activities.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +44,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.main.view.activities.MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

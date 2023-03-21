@@ -3,24 +3,26 @@ package com.instances.food2fork.data.pagingsource
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.instances.food2fork.data.api.ApiHelper
-import com.instances.food2fork.data.model.response.Data
+import com.instances.food2fork.data.model.response.Results
 import com.instances.food2fork.utils.Constants.Companion.STARTING_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class QuotePagingSource(private val apiHelper: ApiHelper) : PagingSource<Int, Data>() {
+class QuotePagingSource(private val apiHelper: ApiHelper,
+                        private val query: String)
+    : PagingSource<Int, Results>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Data> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Results> {
 
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = apiHelper.getQuotes(position)
-            val users = response.data
+            val response = apiHelper.getQuotes(position,query)
+            val recipes = response.results
             LoadResult.Page(
-                data = users,
+                data = recipes,
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
-                nextKey = if (users.isEmpty()) null else position + 1
+                nextKey = if (recipes.isEmpty()) null else position + 1
             )
         } catch (exception: IOException) {
             LoadResult.Error(exception)
@@ -29,7 +31,7 @@ class QuotePagingSource(private val apiHelper: ApiHelper) : PagingSource<Int, Da
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, Data>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, Results>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
                 ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)

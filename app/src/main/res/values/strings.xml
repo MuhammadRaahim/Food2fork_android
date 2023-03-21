@@ -6,4 +6,5 @@
     <string name="str_close">Close</string>
     <string name="str_retry">Retry</string>
     <string name="str_results_could_not_be_loaded">Results could not be loaded</string>
+    <string name="str_search_here">Search here</string>
 </resources>

@@ -4,13 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.databinding.DataBindingUtil
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.instances.food2fork.R
 import com.instances.food2fork.data.api.ApiHelper
 import com.instances.food2fork.data.api.RetrofitBuilder
 import com.instances.food2fork.data.model.response.Data
+import com.instances.food2fork.data.model.response.Results
 import com.instances.food2fork.databinding.ActivityMainBinding
 import com.instances.food2fork.ui.base.ViewModelFactory
 import com.instances.food2fork.ui.main.adapter.MyLoadStateAdapter
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: NamesAdapter
-    private lateinit var nameList: ArrayList<Data>
+    private lateinit var nameList: ArrayList<Results>
 
     private val viewModel:MainViewModel by viewModels{
         ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
@@ -29,7 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setUpUI()
         setRecyclerView()
@@ -47,13 +48,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun executeApi(){
-        if (viewModel.getQuotes.value == null) {
-            viewModel.getQuotes()
+        if (viewModel.getRecipes.value == null) {
+            viewModel.getRecipes("beef")
         }
     }
 
     private fun setUpObserver() {
-        viewModel.getQuotes.observe(this){
+        viewModel.getRecipes.observe(this){
             adapter.submitData(lifecycle, it)
         }
     }
@@ -61,14 +62,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun setUpUI() {
         nameList = ArrayList()
-        adapter = NamesAdapter()
     }
 
     private fun setRecyclerView() {
         binding.rvNames.let {
             it.setHasFixedSize(true)
             it.layoutManager = LinearLayoutManager(this)
-            it.adapter = NamesAdapter()
+
             it.adapter = adapter.withLoadStateHeaderAndFooter(
                 header = MyLoadStateAdapter { adapter.retry() },
                 footer = MyLoadStateAdapter { adapter.retry() }
