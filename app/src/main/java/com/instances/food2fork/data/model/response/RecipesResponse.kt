@@ -1,6 +1,8 @@
 package com.instances.food2fork.data.model.response
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -14,6 +16,7 @@ data class RecipesResponse (
 
 @Entity(tableName = "Results")
 data class Results (
+    @PrimaryKey(autoGenerate = false)
     @SerializedName("pk"                   ) var pk                  : Int?              = null,
     @SerializedName("title"                ) var title               : String?           = null,
     @SerializedName("publisher"            ) var publisher           : String?           = null,

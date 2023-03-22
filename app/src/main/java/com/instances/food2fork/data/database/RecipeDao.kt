@@ -9,7 +9,7 @@ import com.instances.food2fork.data.model.response.Results
 
 @Dao
 interface RecipeDao {
-    @Query("SELECT * FROM quotes ORDER BY id ASC")
+    @Query("SELECT * FROM Results ORDER BY pk ASC")
     fun getQuotes(): PagingSource<Int, Results>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
