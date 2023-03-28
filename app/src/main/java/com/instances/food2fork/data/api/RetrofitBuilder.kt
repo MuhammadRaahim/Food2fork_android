@@ -1,15 +1,12 @@
 package com.instances.food2fork.data.api
 
 import com.instances.food2fork.App
-import com.instances.food2fork.utils.BaseUtils
 import com.instances.food2fork.utils.Constants
-import com.instances.food2fork.utils.PrefManager
 import com.google.gson.GsonBuilder
 import okhttp3.*
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 
 object RetrofitBuilder {
@@ -18,7 +15,6 @@ object RetrofitBuilder {
     private val okHttpClient = buildClient()
 
     private fun buildClient(): OkHttpClient {
-        val manager = PrefManager(App.getAppContext()!!)
         clientBuilder.addInterceptor(getLoggingInterceptor())
             .addInterceptor { chain ->
                 val newRequest: Request = chain.request().newBuilder()

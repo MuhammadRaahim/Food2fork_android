@@ -5,6 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.instances.food2fork.App
 import com.instances.food2fork.data.model.response.Results
 
 
@@ -24,7 +25,7 @@ abstract class RecipeDatabase: RoomDatabase() {
             }
             synchronized(this) {
                 val instance = Room.databaseBuilder(
-                    context.applicationContext,
+                    App.getAppContext()!!,
                     RecipeDatabase::class.java,
                     "user_database"
                 ).allowMainThreadQueries().fallbackToDestructiveMigration().
@@ -36,4 +37,5 @@ abstract class RecipeDatabase: RoomDatabase() {
     }
 
     abstract fun recipeDao():RecipeDao
+
 }

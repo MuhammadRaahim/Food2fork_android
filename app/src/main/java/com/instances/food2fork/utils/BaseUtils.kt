@@ -45,20 +45,5 @@ class BaseUtils {
             return result
         }
 
-        fun getError(exception: Exception): String {
-            return try {
-                val httpException: HttpException = exception as HttpException
-                val errorBody: String = httpException.response()!!.errorBody()!!.string()
-                val errorResponse: ErrorResponse =
-                    Gson().fromJson(errorBody, ErrorResponse::class.java)
-                if (httpException.code() == 401) {
-                    //logout
-//                    EventBus.getDefault().post(LogoutEvent())
-                }
-                errorResponse.message
-            } catch (e: Exception) {
-                exception.message.toString()
-            }
-        }
     }
 }

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.paging.LoadState
@@ -13,16 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.instances.food2fork.data.api.ApiHelper
 import com.instances.food2fork.data.api.RetrofitBuilder
+import com.instances.food2fork.data.database.RecipeDatabase
 import com.instances.food2fork.data.model.response.Results
 import com.instances.food2fork.databinding.ActivityHomeBinding
 import com.instances.food2fork.ui.base.ViewModelFactory
 import com.instances.food2fork.ui.main.adapter.CategoryAdapter
 import com.instances.food2fork.ui.main.adapter.MyLoadStateAdapter
 import com.instances.food2fork.ui.main.adapter.NamesAdapter
-import com.instances.food2fork.ui.main.adapter.RecipeAdapter
 import com.instances.food2fork.ui.main.callbacks.OnCategoryClickListener
 import com.instances.food2fork.ui.main.callbacks.OnRecipeClickListener
 import com.instances.food2fork.ui.main.viewmodel.MainViewModel
+import com.instances.food2fork.utils.BaseUtils.Companion.isInternetAvailable
 import com.instances.food2fork.utils.Constants.Companion.DEFAULT_CATEGORY
 import com.instances.food2fork.utils.Constants.Companion.RECIPE
 
@@ -33,8 +33,10 @@ class HomeActivity : AppCompatActivity(), OnCategoryClickListener,OnRecipeClickL
     private lateinit var recipeAdapter: NamesAdapter
     private lateinit var recipeList: ArrayList<Results>
 
+    private val database: RecipeDatabase = RecipeDatabase.getDatabase(this)
+
     private val viewModel: MainViewModel by viewModels{
-        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService))
+        ViewModelFactory(ApiHelper(RetrofitBuilder.apiService),database)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,7 +111,9 @@ class HomeActivity : AppCompatActivity(), OnCategoryClickListener,OnRecipeClickL
     }
 
     override fun onCategoryClick(category: String) {
-        viewModel.getRecipes(category)
+        if(isInternetAvailable(this)){
+           viewModel.getRecipes(category)
+        }
     }
 
     override fun onRecipeClick(recipe: Results) {
@@ -121,7 +125,7 @@ class HomeActivity : AppCompatActivity(), OnCategoryClickListener,OnRecipeClickL
     private fun setSearch() {
         binding.etSearch.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.toString().isNotEmpty()) {
+                if(isInternetAvailable(this@HomeActivity)){
                     viewModel.getRecipes(s.toString())
                 }
             }

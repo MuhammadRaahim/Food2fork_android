@@ -8,8 +8,8 @@ import com.instances.food2fork.utils.Constants.Companion.STARTING_PAGE_INDEX
 import retrofit2.HttpException
 import java.io.IOException
 
-class QuotePagingSource(private val apiHelper: ApiHelper,
-                        private val query: String)
+class RecipePagingSource(private val apiHelper: ApiHelper,
+                         private val query: String)
     : PagingSource<Int, Results>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Results> {

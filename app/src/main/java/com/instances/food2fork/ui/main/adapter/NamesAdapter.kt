@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.instances.food2fork.R
-import com.instances.food2fork.data.model.response.Data
 import com.instances.food2fork.data.model.response.Results
 import com.instances.food2fork.databinding.ItemCategoriesBinding
 import com.instances.food2fork.databinding.ItemRecipeBinding
