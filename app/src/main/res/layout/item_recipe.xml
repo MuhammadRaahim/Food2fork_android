@@ -18,8 +18,8 @@
                 android:id="@+id/iv_recipe"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_160sdp"
+                android:background="@color/black"
                 android:src="@drawable/img_app_logo"
-                android:scaleType="centerCrop"
                 app:layout_constraintTop_toTopOf="parent"/>
             <TextView
                 android:id="@+id/tv_recipe"
